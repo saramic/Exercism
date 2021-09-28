@@ -4,3 +4,5 @@ node_modules
 **/*.pyc
 .lein-failures
 target
+.exercism
+.vscode
