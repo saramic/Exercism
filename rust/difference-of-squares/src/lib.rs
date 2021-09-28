@@ -1,0 +1,14 @@
+pub fn square_of_sum(n: u32) -> u32 {
+    // (1..n + 1).fold(0, |a, b| a + b).pow(2)
+    ((n * (n + 1)) / 2).pow(2)
+}
+
+pub fn sum_of_squares(n: u32) -> u32 {
+    // (1..n + 1).map(|a| a.pow(2)).fold(0, |a, b| a + b)
+    (n * (n + 1)) * ((2 * n) + 1) / 6
+}
+
+pub fn difference(n: u32) -> u32 {
+    // square_of_sum(n) - sum_of_squares(n)
+    ((3 * n.pow(2)) + (2 * n)) * (n.pow(2) - 1) / 12
+}
