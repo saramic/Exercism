@@ -36,14 +36,18 @@ export function limesToCut(wedgesNeeded, limes) {
     medium: 8,
     large: 10,
   };
-  const limeWedges = limes.map((lime) => wedgesPerLime[lime]);
-  let wedgesCut = 0;
-  let limeCount = 0;
-  while (wedgesCut < wedgesNeeded) {
-    wedgesCut += limeWedges[limeCount];
-    if (limes.length > limeCount) limeCount++;
-  }
-  return limeCount;
+  return limes
+    .map((lime) => wedgesPerLime[lime])
+    .reduce(
+      (accum, lime) =>
+        accum.wedgesCut < wedgesNeeded
+          ? {
+              wedgesCut: accum.wedgesCut + lime,
+              limeCount: accum.limeCount + 1,
+            }
+          : accum,
+      { wedgesCut: 0, limeCount: 0 }
+    ).limeCount;
 }
 
 /**
