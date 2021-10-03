@@ -32,14 +32,9 @@ export function revokeTicket(visitor) {
  * @returns {string} ticket status
  */
 export function ticketStatus(tickets, ticketId) {
-  // TODO: must be a more succinct way?
-  if (tickets[ticketId]) {
-    return `sold to ${tickets[ticketId]}`;
-  }
-  if (tickets[ticketId] === null) {
-    return "not sold";
-  }
-  return "unknown ticket id";
+  const name = tickets[ticketId];
+  if (name) return `sold to ${name}`;
+  return name === null ? "not sold" : "unknown ticket id";
 }
 
 /**
@@ -51,10 +46,8 @@ export function ticketStatus(tickets, ticketId) {
  * @returns {string} ticket status
  */
 export function simpleTicketStatus(tickets, ticketId) {
-  // TODO: agains is there a neater way?
-  return tickets[ticketId] === null || tickets[ticketId] === undefined
-    ? "invalid ticket !!!"
-    : tickets[ticketId];
+  // NOTE: using nullish caolescing operator ??
+  return tickets[ticketId] ?? "invalid ticket !!!";
 }
 
 /**
