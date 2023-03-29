@@ -10,5 +10,5 @@ class LogLineParser
     @log_level = matches[:level].downcase
   end
 
-  def reformat = format('%<message>s (%<level>s)', message:, level: log_level)
+  def reformat = format('%<message>s (%<level>s)', message: message, level: log_level)
 end
