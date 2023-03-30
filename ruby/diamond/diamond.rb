@@ -5,25 +5,20 @@ class Diamond
 
   def initialize(letter)
     @letter = letter
+    @size = LETTERS.index(@letter) + 1
   end
 
   def to_s
-    reverse_letters = []
-    size = LETTERS.index(@letter)
-    (0..size).map do |index|
-      offset = size - index
-      inset = (index * 2) - 1
-      letter_string = if LETTERS[index] == 'A'
-                        (' ' * offset) + LETTERS[index] + (' ' * offset)
-                      else
-                        (' ' * offset) + LETTERS[index] + (' ' * inset) + LETTERS[index] + (' ' * offset)
-                      end
-      reverse_letters << letter_string
-      letter_string
-    end.then do |output|
-      reverse_letters = reverse_letters.tap(&:pop).reverse
-      (output + reverse_letters).join("\n")
-    end + "\n"
+    output = (0..(@size - 1)).map(&method(:create_line))
+    output += output.clone.tap(&:pop).reverse
+    "#{output.join("\n")}\n"
+  end
+
+  def create_line(index)
+    line = ' ' * ((@size * 2) - 1)
+    line[(@size - index) - 1] = LETTERS[index]
+    line[(line.length - 1 - (@size - index)) + 1] = LETTERS[index]
+    line
   end
 
   def self.make_diamond(letter) = new(letter).to_s
