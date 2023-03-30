@@ -46,7 +46,7 @@ class Tournament
 
   def sort_teams_by_points(teams)
     if @teams.map { |team| team[:p] }.uniq.count > 1
-      teams.sort_by(&:p).reverse
+      teams.sort_by { |team| [-team[:p], team[:name]] }
     else
       teams
     end
