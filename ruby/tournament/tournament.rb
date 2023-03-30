@@ -4,7 +4,7 @@ class Tournament
   # NOTE: should probably move it to it's own class :)
   extend_team_struct = proc do |_new_class|
     def mp = w + d + l
-    def to_s = format(OUTPUT_FORMAT, title: name, mp:, w:, d:, l:, p:)
+    def to_s = format(OUTPUT_FORMAT, title: name, mp: mp, w: w, d: d, l: l, p: p)
   end
   TEAM_STRUCT = Struct.new(
     :name,
@@ -37,13 +37,6 @@ class Tournament
   end
 
   def header_line = format(OUTPUT_FORMAT, title: 'Team', mp: 'MP', w: 'W', d: 'D', l: 'L', p: 'P')
-
-  def format_output(team)
-    format(
-      OUTPUT_FORMAT,
-      title: team.name, mp: team.mp, w: team.w, d: team.d, l: team.l, p: team.p
-    )
-  end
 
   def sort_teams_by_points(teams)
     if @teams.values.map { |team| team[:p] }.uniq.count > 1
