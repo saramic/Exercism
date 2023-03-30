@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
 class Tournament
+  # NOTE: should probably move it to it's own class :)
+  extend_team_struct = proc do |_new_class|
+    def mp = w + d + l
+    def to_s = format(OUTPUT_FORMAT, title: name, mp:, w:, d:, l:, p:)
+  end
   TEAM_STRUCT = Struct.new(
     :name,
-    :mp, :w, :d, :l, :p,
-    keyword_init: true
+    :w, :d, :l, :p,
+    keyword_init: true,
+    &extend_team_struct
   )
   OUTPUT_FORMAT = '%<title>-31s| %<mp>2s | %<w>2s | %<d>2s | %<l>2s | %<p>2s'
 
   def initialize(input)
-    @teams = []
+    @teams = {}
     input.split("\n").map(&method(:process_line))
   end
 
@@ -24,15 +30,10 @@ class Tournament
     "#{([header_line] + team_lines).join("\n")}\n"
   end
 
-  def team_lines = @teams.then(&method(:sort_teams_by_points)).map(&method(:format_output))
+  def team_lines = @teams.values.then(&method(:sort_teams_by_points)).map(&:to_s)
 
   def find_or_create(team_name)
-    found_team = @teams.find { |team| team.name == team_name }
-    if found_team.nil?
-      found_team = TEAM_STRUCT.new(name: team_name, mp: 0, w: 0, d: 0, l: 0, p: 0)
-      @teams << found_team
-    end
-    found_team
+    @teams[team_name] ||= TEAM_STRUCT.new(name: team_name, w: 0, d: 0, l: 0, p: 0)
   end
 
   def header_line = format(OUTPUT_FORMAT, title: 'Team', mp: 'MP', w: 'W', d: 'D', l: 'L', p: 'P')
@@ -45,7 +46,7 @@ class Tournament
   end
 
   def sort_teams_by_points(teams)
-    if @teams.map { |team| team[:p] }.uniq.count > 1
+    if @teams.values.map { |team| team[:p] }.uniq.count > 1
       teams.sort_by { |team| [-team[:p], team[:name]] }
     else
       teams
@@ -53,7 +54,6 @@ class Tournament
   end
 
   def process_result(team_a, team_b, result)
-    match_played(team_a, team_b)
     case result
     when 'win'
       win(team_a, team_b)
@@ -62,11 +62,6 @@ class Tournament
     when 'draw'
       draw(team_a, team_b)
     end
-  end
-
-  def match_played(team_a, team_b)
-    team_a.mp += 1
-    team_b.mp += 1
   end
 
   def win(team_a, team_b)
