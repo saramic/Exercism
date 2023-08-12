@@ -1,26 +1,20 @@
 export class Matrix {
-  readonly matrix: number[][] = [];
-  readonly matrixCols: number[][] = [];
+  readonly rows: number[][]
+  readonly columns: number[][]
 
   constructor(matrixStr: string) {
+    this.rows = [];
+    this.columns = [];
     matrixStr
       .split("\n")
       .map((rowStr, rowIndex) => {
-          this.matrix.push(
+          this.rows.push(
             rowStr.split(" ").map((element) => parseInt(element))
           )
-          this.matrix[rowIndex].map((value, index) => {
-            this.matrixCols[index] ??= [];
-            this.matrixCols[index].push(value)
+          this.rows[rowIndex].map((value, index) => {
+            this.columns[index] ??= [];
+            this.columns[index].push(value)
           })
       })
-  }
-
-  get rows(): number[][] {
-    return this.matrix
-  }
-
-  get columns(): number[][] {
-    return this.matrixCols
   }
 }
