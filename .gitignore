@@ -6,3 +6,8 @@ node_modules
 target
 .exercism
 .vscode
+cache
+**/*.cjs
+.pnp.loader.mjs
+install-state.gz
+yarn.lock
