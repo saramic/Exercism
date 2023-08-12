@@ -3,16 +3,12 @@ export class Matrix {
   readonly columns: number[][]
 
   constructor(matrixStr: string) {
-    this.rows = [];
-    this.columns = [];
-    matrixStr
+    this.rows = matrixStr
       .split("\n")
-      .map((rowStr, rowIndex) => {
-          this.rows.push(rowStr.split(" ").map(Number))
-          this.rows[rowIndex].map((value, index) => {
-            this.columns[index] ??= [];
-            this.columns[index].push(value)
-          })
-      })
+      .map((rowStr) => rowStr.split(" ").map(Number))
+
+    this.columns = this
+      .rows[0]
+      .map((_, rowIndex) => this.rows.map((row) => row[rowIndex]));
   }
 }
